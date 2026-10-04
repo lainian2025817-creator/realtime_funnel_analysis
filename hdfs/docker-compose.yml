@@ -1,0 +1,44 @@
+services:
+
+  namenode:
+    image: apache/hadoop:3.4.3
+    container_name: namenode
+    hostname: namenode
+    user: root
+    ports:
+      - "9870:9870"
+      - "9000:9000"
+    volumes:
+      - namenode_data:/opt/hadoop/data/name
+      - ./core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml
+      - ./hdfs-site-namenode.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml
+    command: >
+      bash -c "
+      if [ ! -d /opt/hadoop/data/name/current ]; then
+        /opt/hadoop/bin/hdfs namenode -format -force;
+      fi;
+      /opt/hadoop/bin/hdfs namenode
+      "
+
+  datanode:
+    image: apache/hadoop:3.4.3
+    container_name: datanode
+    hostname: datanode
+    user: root
+    ports:
+      - "9864:9864"
+    volumes:
+      - datanode_data:/opt/hadoop/data/data
+      - ./core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml
+      - ./hdfs-site-datanode.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml
+    depends_on:
+      - namenode
+    command: >
+      bash -c "
+      sleep 10;
+      /opt/hadoop/bin/hdfs datanode
+      "
+
+volumes:
+  namenode_data:
+  datanode_data:
