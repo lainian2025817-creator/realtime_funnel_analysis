@@ -1,1 +1,16 @@
+CREATE DATABASE IF NOT EXISTS realtime;
 
+USE realtime;
+
+CREATE TABLE IF NOT EXISTS funnel_result (
+    window_start DATETIME NOT NULL,
+    window_end DATETIME NOT NULL,
+    pv_user INT NOT NULL,
+    cart_user INT NOT NULL,
+    buy_user INT NOT NULL,
+    pv_to_cart DECIMAL(10,4) NOT NULL,
+    cart_to_buy DECIMAL(10,4) NOT NULL,
+    pv_to_buy DECIMAL(10,4) NOT NULL,
+
+    UNIQUE KEY uk_window (window_start, window_end)
+);
