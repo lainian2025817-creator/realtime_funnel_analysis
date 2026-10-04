@@ -5,8 +5,7 @@ from pyspark.sql.functions import (
     col,
     window,
     approx_count_distinct,
-    when,
-    first
+    when
 )
 from pyspark.sql.types import (
     StructType,
