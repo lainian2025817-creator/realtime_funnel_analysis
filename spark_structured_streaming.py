@@ -198,6 +198,7 @@ query = (
     result_df.writeStream
     .outputMode("update")
     .foreachBatch(write_to_mysql)
+    .option("checkpointLocation", "/opt/project/checkpoint")
     .trigger(processingTime="5 seconds")
     .start()
 )
