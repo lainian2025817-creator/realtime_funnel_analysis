@@ -27,7 +27,6 @@ with open(input_file, "r", encoding="utf-8") as f:
 
 print(f"读取完成：{len(data)} 条")
 
-print("开始按 timestamp 排序...")
 data.sort(key=lambda x: x[4])
 
 with open(output_file, "w", encoding="utf-8", newline="") as f:
