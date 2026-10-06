@@ -1,6 +1,6 @@
 # 实时用户行为漏斗分析
 
-基于阿里天池 UserBehavior 数据集，使用 Kafka、Spark Structured Streaming、HDFS、Hive 和 MySQL，构建一个简单的用户行为实时与离线分析项目。
+本项目构建了一个实时统计用户行为转化率的漏斗分析，涵盖了从原始数据采集、清洗到最终指标导出的全流程
 
 ## ▪ 1. 项目简介
 
@@ -9,7 +9,7 @@
 实时部分使用 Python 模拟用户行为数据持续产生，经 Kafka 传输后，由 Spark Structured Streaming 进行窗口统计和转化率计算，最终将结果写入 MySQL。
 
 离线部分将历史 UserBehavior 数据存入 HDFS，通过 Hive 建表、分区并使用 Hive SQL 进行分析。
-
+ 
 主要指标：
 
 - PV → Cart
