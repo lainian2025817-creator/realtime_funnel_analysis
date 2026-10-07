@@ -1,62 +1,73 @@
 USE userbehavior;
-
-
--- 1. 每日 PV / UV
+INSERT INTO TABLE funnel_rt_d
+PARTITION (event_date)
 SELECT
-    event_date,
-    COUNT(*) AS pv,
-    COUNT(DISTINCT user_id) AS uv
-FROM user_behavior_daily
-GROUP BY event_date
-ORDER BY event_date;
-
-
--- 2. 每日各行为发生次数
-SELECT
-    event_date,
-    behavior,
-    COUNT(*) AS behavior_count
-FROM user_behavior_daily
-GROUP BY event_date, behavior
-ORDER BY event_date, behavior;
-
-
--- 3. 每日各行为对应的用户数
-SELECT
-    event_date,
-    behavior,
-    COUNT(DISTINCT user_id) AS user_count
-FROM user_behavior_daily
-GROUP BY event_date, behavior
-ORDER BY event_date, behavior;
-
-
--- 4. 每日用户行为转化率
-SELECT
-    event_date,
     pv_user,
     cart_user,
     buy_user,
-    ROUND(cart_user / pv_user, 4) AS pv_to_cart,
-    ROUND(buy_user / cart_user, 4) AS cart_to_buy,
-    ROUND(buy_user / pv_user, 4) AS pv_to_buy
-FROM (
+    CASE 
+        WHEN pv_user > 0 
+        THEN cart_user / pv_user 
+        ELSE 0 
+    END AS pv_to_cart,
+    CASE 
+        WHEN cart_user > 0 
+        THEN buy_user / cart_user 
+        ELSE 0 
+    END AS cart_to_buy,
+    CASE 
+        WHEN pv_user > 0 
+        THEN buy_user / pv_user 
+        ELSE 0 
+    END AS pv_to_buy,
+    event_date
+FROM(
     SELECT
         event_date,
+        COUNT(
+            CASE 
+                WHEN pv_flag = 1 
+                THEN user_id 
+            END
+        ) AS pv_user,
+        COUNT(
+            CASE 
+                WHEN pv_flag = 1 
+                AND cart_flag = 1
+                THEN user_id 
+            END
+        ) AS cart_user,
+        COUNT(
+            CASE 
+                WHEN pv_flag = 1 
+                AND cart_flag = 1
+                AND buy_flag = 1
+                THEN user_id 
+            END
+        ) AS buy_user
+    FROM(
+        SELECT
+            user_id,
+            event_date,
+            MAX(
+                CASE 
+                    WHEN behavior='pv' THEN 1 ELSE 0 
+                END
+            ) AS pv_flag,
+            MAX(
+                CASE 
+                    WHEN behavior='cart' THEN 1 ELSE 0 
+                END
+            ) AS cart_flag,
+            MAX(
+                CASE 
+                    WHEN behavior='buy' THEN 1 ELSE 0 
+                END
+            ) AS buy_flag
+        FROM user_behavior_daily
+        GROUP BYuser_id,event_date
+    ) t
 
-        COUNT(DISTINCT CASE
-            WHEN behavior = 'pv' THEN user_id
-        END) AS pv_user,
-
-        COUNT(DISTINCT CASE
-            WHEN behavior = 'cart' THEN user_id
-        END) AS cart_user,
-
-        COUNT(DISTINCT CASE
-            WHEN behavior = 'buy' THEN user_id
-        END) AS buy_user
-
-    FROM user_behavior_daily
     GROUP BY event_date
-) t
-ORDER BY event_date;
+
+) result;
