@@ -189,7 +189,7 @@ realtime_funnel_analysis/
 ├── hive_sql/                                  # Hive 建表及离线分析 SQL
 │   ├── 01_create_tables.sql                   # 创建数据库及用户行为表
 │   ├── 02_partition_insert.sql                # 动态分区写入数据
-│   └── 03_offline_analysis.sql                # PV、UV、行为及转化率分析
+│   └── 03_funnel_rt_d.sql                # PV、UV、行为及转化率分析
 │
 ├── jars/                                      # Spark 连接 Kafka 所需依赖
 │   ├── commons-pool2-2.11.1.jar
