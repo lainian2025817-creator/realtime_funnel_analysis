@@ -28,7 +28,7 @@
 
 项目运行在 Windows + WSL2 Ubuntu + Docker 的单机环境中。
 
-<img width="1278" height="461" alt="42ec378786181b35f7b635f19871b352" src="https://github.com/user-attachments/assets/546e5d81-8f77-4d6b-9a46-c86a3c884f23" />
+<img width="2087" height="753" alt="799de24157cc06a53540d35a999f4c37" src="https://github.com/user-attachments/assets/a5ac4392-ec8d-40af-9fcd-bb00040e848c" />
 
 ### 实时计算
 
@@ -93,7 +93,7 @@ Spark Structured Streaming 从 Kafka 持续读取数据。
 
 流程图：
 
-<img width="1599" height="482" alt="image" src="https://github.com/user-attachments/assets/ee9bfb12-8e1b-47b4-8c3e-88301d96423c" />
+<img width="1800" height="748" alt="94e21b8c4540fda98a9b7e3a3bf41ff5" src="https://github.com/user-attachments/assets/8e20de8b-0874-40fd-ae24-84ab9cbc7c5e" />
 
 ### 3.3 转化率计算
 
